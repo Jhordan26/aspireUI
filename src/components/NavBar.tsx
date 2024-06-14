@@ -167,7 +167,7 @@ const ResponsiveAppBar: React.FC = () => {
             </AppBar>
 
             {/* Contenido principal con margen a la derecha para dejar espacio para la barra de navegación */}
-            <Box component="main" sx={{ flexGrow: 1, marginRight: { xs: '0', md: '110px' }, padding: '20px' }}>
+            <Box component="main" sx={{ flexGrow: 1, marginLeft:'70px', padding: '20px' }}>
                 {/* Aquí va el contenido principal de la página */}
             </Box>
         </Box>

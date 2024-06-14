@@ -53,9 +53,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Header: React.FC = () => {
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', width: '100%', boxSizing: 'border-box' }}>
       <ResponsiveAppBar />
-      <AppBar position="static" sx={{ width: `calc(100% - 240px)`, ml: `240px` }}>
+      <AppBar position="static" sx={{ width: 'calc(100% - 110px)', boxSizing: 'border-box' }}>
         <Toolbar>
           <Typography variant="h6" noWrap>
             MyApp
@@ -69,7 +69,7 @@ const Header: React.FC = () => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          <div style={{ flexGrow: 1 }} />
+          <Box sx={{ flexGrow: 1 }} />
           <IconButton aria-label="show cart items" color="inherit">
             <Badge badgeContent={4} color="secondary">
               <ShoppingCartIcon />
