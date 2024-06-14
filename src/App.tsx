@@ -20,7 +20,9 @@ const App: React.FC = () => {
               <Container maxWidth="xl">
                 <main>
                   <br />
-                  <Courses />
+                  <div >
+                  <Courses />  
+                  </div>
                 </main>
               </Container>
             </>

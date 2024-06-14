@@ -9,6 +9,7 @@ interface BannerProps {
 const Banner: React.FC<BannerProps> = ({ imageUrl, title }) => {
   return (
     <Box
+    
       sx={{
         backgroundImage: `url(/${imageUrl})`, // Utiliza una ruta relativa desde public/
         backgroundSize: 'cover',

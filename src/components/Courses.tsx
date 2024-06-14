@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import { Card, CardBody, Button } from 'react-bootstrap';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import axios from '../../utils/api';
 
 interface Course {
@@ -29,34 +28,26 @@ const Courses: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <Typography variant="h4" align="center" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', marginBottom: '20px' }}>
+    <div className="container" style={{ marginLeft: '110px' }}>
+      <Typography variant="h4" align="center" gutterBottom style={{ fontFamily: 'Arial, sans-serif', marginBottom: '20px' }}>
         Conoce nuestros cursos
       </Typography>
-      <div className="gap-2 grid grid-cols-2 sm:grid-cols-4 justify-center">
+      <div className="d-flex flex-row flex-wrap justify-content-start gap-3">
         {courses.map((course) => (
-          <Card key={course.id} shadow="sm" onPress={() => console.log("item pressed")} className="max-w-sm">
-            <Image
-              src={course.imagen}
-              alt={course.nombre}
-              width="20%"
-              height="140px"
-              className="object-cover rounded-t-lg"
-            />
-            <CardBody>
-              <Typography variant="h5" component="div" gutterBottom>
-                {course.nombre}
-              </Typography>
-              <Typography variant="body1" color="text.primary" sx={{ color: 'red', marginTop: '10px' }}>
-                Total price: S/ {course.plan_precio}
-              </Typography>
-            </CardBody>
-            <CardFooter className="text-small justify-between">
-              <Button size="medium" color="error" variant="contained">
-                Comprar
-              </Button>
-            </CardFooter>
-          </Card>
+          <div key={course.id} className="col-md-3 mb-3">
+            <Card className="shadow-sm" style={{ width: '18rem' }}>
+              <Card.Img variant="top" src={course.imagen} alt={course.nombre} style={{ height: '140px', objectFit: 'cover' }} />
+              <CardBody>
+                <Card.Title>{course.nombre}</Card.Title>
+                <Card.Text className="text-primary">
+                  Total price: S/ {course.plan_precio}
+                </Card.Text>
+                <Button variant="danger" size="md" block>
+                  Comprar
+                </Button>
+              </CardBody>
+            </Card>
+          </div>
         ))}
       </div>
     </div>
