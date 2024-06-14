@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, Button, Pagination } from 'react-bootstrap';
 import axios from '../../utils/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './../style/CoursesSection.css';
 
 interface Course {
   id: number;
@@ -38,30 +39,32 @@ const Courses: React.FC = () => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <div className="d-flex flex-column align-items-center gap-3">
-      <div className="d-flex flex-row flex-wrap justify-content-center gap-3">
-        {currentCourses.map((course) => (
-          <Card key={course.id} className="shadow-sm" style={{ width: '18rem' }}>
-            <Card.Img variant="top" src={course.imagen} alt={course.nombre} style={{ height: '140px', objectFit: 'cover' }} />
-            <Card.Body>
-              <Card.Title>{course.nombre}</Card.Title>
-              <Card.Text className="text-primary">
-                Total price: S/ {course.plan_precio}
-              </Card.Text>
-              <Button variant="danger" size="lg" >
-                Comprar
-              </Button>
-            </Card.Body>
-          </Card>
-        ))}
+    <div className="container">
+      <div className="d-flex flex-column align-items-center gap-3">
+        <div className="d-flex flex-row flex-wrap justify-content-center gap-3">
+          {currentCourses.map((course) => (
+            <Card key={course.id} className="shadow-sm" style={{ width: '18rem' }}>
+              <Card.Img variant="top" src={course.imagen} alt={course.nombre} style={{ height: '140px', objectFit: 'cover' }} />
+              <Card.Body>
+                <Card.Title>{course.nombre}</Card.Title>
+                <Card.Text className="text-primary">
+                  Total price: S/ {course.plan_precio}
+                </Card.Text>
+                <Button variant="danger" size="lg">
+                  Comprar
+                </Button>
+              </Card.Body>
+            </Card>
+          ))}
+        </div>
+        <Pagination className="mt-4">
+          {Array.from({ length: Math.ceil(courses.length / coursesPerPage) }, (_, index) => (
+            <Pagination.Item key={index + 1} active={index + 1 === currentPage} onClick={() => paginate(index + 1)}>
+              {index + 1}
+            </Pagination.Item>
+          ))}
+        </Pagination>
       </div>
-      <Pagination className="mt-4">
-        {Array.from({ length: Math.ceil(courses.length / coursesPerPage) }, (_, index) => (
-          <Pagination.Item key={index + 1} active={index + 1 === currentPage} onClick={() => paginate(index + 1)}>
-            {index + 1}
-          </Pagination.Item>
-        ))}
-      </Pagination>
     </div>
   );
 };

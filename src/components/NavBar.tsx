@@ -59,64 +59,55 @@ const ResponsiveAppBar: React.FC = () => {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            {/* AppBar fijado al costado con altura completa */}
-            <AppBar position="fixed" sx={{ width: '110px', height: '100vh', flexDirection: 'column', alignItems: 'center', background:'#1E2123', left:'0'}}>
-                <Toolbar sx={{ flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-                    {/* Icono del logo */}
-                    <AdbIcon sx={{ mb: 2 }} />
-                    {/* Título/logo */}
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="#"
-                        sx={{
-                            mb: 2,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                            textAlign: 'center',
-                            width: '100%',
-                        }}
-                    >
-                        LOGO
-                    </Typography>
-
-                    {/* Icono del menú (solo visible en dispositivos pequeños) */}
-                    <Box sx={{ flexGrow: 1, width: '100%' }}>
-                        <MenuIcon sx={{ mb: 2 }} />
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
-                            sx={{
-                                display: { xs: 'block', md: 'none' },
-                            }}
-                        >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={() => handlePageClick(page)}>
-                                    <Typography variant="body1" textAlign="center">
-                                        {page}
-                                    </Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
+            {/* AppBar fijado al costado derecho con altura completa */}
+            <AppBar position="fixed" sx={{ width: { xs: '100%', md: '110px' }, height: { xs: 'auto', md: '100vh' }, flexDirection: { xs: 'row', md: 'column' }, alignItems: 'center', background: '#1E2123', left: 0, top: 0 }}>
+                <Toolbar sx={{ flexDirection: { xs: 'row', md: 'column' }, alignItems: 'center', width: '100%' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                        {/* Icono del logo */}
+                        <AdbIcon sx={{ mb: { xs: 0, md: 2 } }} />
+                        {/* Icono del menú (solo visible en dispositivos pequeños) */}
+                        <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                            <IconButton
+                                size="large"
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={handleOpenNavMenu}
+                                color="inherit"
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Menu
+                                id="menu-appbar"
+                                anchorEl={anchorElNav}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElNav)}
+                                onClose={handleCloseNavMenu}
+                                sx={{
+                                    display: { xs: 'block', md: 'none' },
+                                }}
+                            >
+                                {pages.map((page) => (
+                                    <MenuItem key={page} onClick={() => handlePageClick(page)}>
+                                        <Typography variant="body1" textAlign="center">
+                                            {page}
+                                        </Typography>
+                                    </MenuItem>
+                                ))}
+                            </Menu>
+                        </Box>
                     </Box>
 
                     {/* Botones de navegación (solo visibles en dispositivos grandes) */}
-                    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                    <Box sx={{ display: { xs: 'none', md: 'flex' }, flexDirection: 'column', width: '100%' }}>
                         {pages.map((page, index) => (
                             <Button
                                 key={page}
@@ -153,12 +144,12 @@ const ResponsiveAppBar: React.FC = () => {
                             anchorEl={anchorElUser}
                             anchorOrigin={{
                                 vertical: 'top',
-                                horizontal: 'left',
+                                horizontal: 'right',
                             }}
                             keepMounted
                             transformOrigin={{
                                 vertical: 'top',
-                                horizontal: 'left',
+                                horizontal: 'right',
                             }}
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
@@ -175,8 +166,8 @@ const ResponsiveAppBar: React.FC = () => {
                 </Toolbar>
             </AppBar>
 
-            {/* Contenido principal con margen a la izquierda para dejar espacio para la barra de navegación */}
-            <Box component="main" sx={{ flexGrow: 1, marginLeft: '110px', padding: '20px' }}>
+            {/* Contenido principal con margen a la derecha para dejar espacio para la barra de navegación */}
+            <Box component="main" sx={{ flexGrow: 1, marginRight: { xs: '0', md: '110px' }, padding: '20px' }}>
                 {/* Aquí va el contenido principal de la página */}
             </Box>
         </Box>
