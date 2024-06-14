@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import CardMedia from '@mui/material/CardMedia';
+import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import axios from '../../utils/api';
@@ -36,28 +33,29 @@ const Courses: React.FC = () => {
       <Typography variant="h4" align="center" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', marginBottom: '20px' }}>
         Conoce nuestros cursos
       </Typography>
-      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div className="gap-2 grid grid-cols-2 sm:grid-cols-4 justify-center">
         {courses.map((course) => (
-          <Card key={course.id} sx={{ maxWidth: 320 }}>
-            <CardMedia
-              component="img"
-              height="200"
-              image={course.imagen}
+          <Card key={course.id} shadow="sm" onPress={() => console.log("item pressed")} className="max-w-sm">
+            <Image
+              src={course.imagen}
               alt={course.nombre}
+              width="20%"
+              height="140px"
+              className="object-cover rounded-t-lg"
             />
-            <CardContent>
+            <CardBody>
               <Typography variant="h5" component="div" gutterBottom>
                 {course.nombre}
               </Typography>
               <Typography variant="body1" color="text.primary" sx={{ color: 'red', marginTop: '10px' }}>
                 Total price: S/ {course.plan_precio}
               </Typography>
-            </CardContent>
-            <CardActions sx={{ justifyContent: 'center' }}>
+            </CardBody>
+            <CardFooter className="text-small justify-between">
               <Button size="medium" color="error" variant="contained">
                 Comprar
               </Button>
-            </CardActions>
+            </CardFooter>
           </Card>
         ))}
       </div>

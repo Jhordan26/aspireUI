@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -18,6 +19,7 @@ const settings = ['Perfil', 'Logout'];
 const ResponsiveAppBar: React.FC = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const navigate = useNavigate(); // Añadir esta línea
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -33,6 +35,19 @@ const ResponsiveAppBar: React.FC = () => {
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+    };
+
+    const handlePageClick = (page: string) => {
+        handleCloseNavMenu();
+        if (page === 'Ingresa') {
+            navigate('/login');
+        } else if (page === 'Cursos') {
+            navigate('/courses');
+        } else if (page === 'Inicio') {
+            navigate('/');
+        } else if (page === 'Sobre') {
+            navigate('/about');
+        }
     };
 
     return (
@@ -88,7 +103,7 @@ const ResponsiveAppBar: React.FC = () => {
                         }}
                     >
                         {pages.map((page) => (
-                            <MenuItem key={page} onClick={handleCloseNavMenu}>
+                            <MenuItem key={page} onClick={() => handlePageClick(page)}>
                                 <Typography variant="body1" textAlign="center">
                                     {page}
                                 </Typography>
@@ -101,7 +116,7 @@ const ResponsiveAppBar: React.FC = () => {
                     {pages.map((page, index) => (
                         <Button
                             key={page}
-                            onClick={handleCloseNavMenu}
+                            onClick={() => handlePageClick(page)}
                             sx={{
                                 mx: 2,
                                 color: 'inherit',
