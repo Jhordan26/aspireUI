@@ -1,4 +1,4 @@
-import React from 'react';
+/* import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -12,6 +12,9 @@ import { alpha, styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import ResponsiveAppBar from '../components/NavBar'; // Asegúrate de que la ruta sea correcta
+
+
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -88,3 +91,4 @@ const Header: React.FC = () => {
 };
 
 export default Header;
+ */
