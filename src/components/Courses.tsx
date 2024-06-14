@@ -4,7 +4,7 @@ import axios from '../../utils/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './../style/CoursesSection.css';
 
-interface Course {
+export interface Course {
   id: number;
   nombre: string;
   descripcion: string;
@@ -12,7 +12,11 @@ interface Course {
   plan_precio: string | number;
 }
 
-const Courses: React.FC = () => {
+interface Props {
+  addToCart: (course: Course) => void;
+}
+
+const Courses: React.FC<Props> = ({ addToCart }) => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [coursesPerPage] = useState<number>(4);
@@ -29,6 +33,11 @@ const Courses: React.FC = () => {
 
     fetchCourses();
   }, []);
+
+  // Función para agregar un curso al carrito
+  const handleAddToCart = (course: Course) => {
+    addToCart(course);
+  };
 
   // Get current courses
   const indexOfLastCourse = currentPage * coursesPerPage;
@@ -50,7 +59,7 @@ const Courses: React.FC = () => {
                 <Card.Text className="text-primary">
                   Total price: S/ {course.plan_precio}
                 </Card.Text>
-                <Button variant="danger" size="lg">
+                <Button variant="danger" size="lg" onClick={() => handleAddToCart(course)}>
                   Comprar
                 </Button>
               </Card.Body>
