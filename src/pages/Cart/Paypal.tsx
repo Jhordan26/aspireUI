@@ -11,7 +11,7 @@ interface PayPalComponentProps {
     cursos: { id: number, nombre: string, precio: number }[];
 }
 
-const PayPalComponent: React.FC<PayPalComponentProps> = ({ nombreCurso, precioPlan, planId, userId, ventaId, cursos = [] }) => {
+const PayPalComponent: React.FC<PayPalComponentProps> = ({ nombreCurso, precioPlan, planId, userId, ventaId, cursos }) => {
     const paypalOptions = {
         "client-id": "AStzaGanGIawQet0X34MMznoIXl8yRh_-gmr4M-e6bo9IEF0Lcl0R14UM_FYZ822EsMt_v79BOdJNknA",
         "currency": "USD"
@@ -22,11 +22,6 @@ const PayPalComponent: React.FC<PayPalComponentProps> = ({ nombreCurso, precioPl
     };
 
     const savePayment = (orderID: string) => {
-        if (!Array.isArray(cursos)) {
-            console.error('Error: cursos no es un array');
-            return;
-        }
-
         const payload = {
             monto: precioPlan, // Ajusta esto según sea necesario
             fecha_registro: new Date().toISOString(),
