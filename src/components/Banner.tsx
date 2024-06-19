@@ -20,6 +20,7 @@ const Banner: React.FC<BannerProps> = ({ imageUrl, title }) => {
         justifyContent: 'center',
         color: 'white',
         textAlign: 'center',
+        marginTop: '20px'
       }}
     >
       <Typography variant="h3">{title}</Typography>

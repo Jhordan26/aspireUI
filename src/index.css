@@ -15,8 +15,8 @@
   /* Ocupar todo el espacio */
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
+  margin: 0rem;
+  padding: 0rem;
 }
 
 a {
@@ -30,6 +30,7 @@ a:hover {
 }
 
 body {
+  padding: 0rem;
   margin: 0rem;
   place-items: center;
   min-width: 320px;

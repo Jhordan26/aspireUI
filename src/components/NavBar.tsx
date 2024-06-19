@@ -60,7 +60,7 @@ const ResponsiveAppBar: React.FC = () => {
     return (
         <Box sx={{ display: 'flex' }}>
             <AppBar position="fixed" sx={{ width: { xs: '100%', md: '110px' }, height: { xs: 'auto', md: '100vh' }, flexDirection: { xs: 'row', md: 'column' }, alignItems: 'center', background: '#1E2123', left: 0, top: 0 }}>
-                <Toolbar sx={{ flexDirection: { xs: 'row', md: 'column' }, alignItems: 'center', width: '100%' }}>
+                <Toolbar sx={{ flexDirection: { xs: 'row', md: 'column' }, alignItems: 'center', width: '100%', mt: { xs: 0, md: 8 } }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                         <AdbIcon sx={{ mb: { xs: 0, md: 2 } }} />
                         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
@@ -111,29 +111,29 @@ const ResponsiveAppBar: React.FC = () => {
                                 sx={{
                                     mb: 2,
                                     color: 'inherit',
-                                    borderRadius: '40',
-                                    backgroundColor: index === pages.length - 1 ? '#f50057' : 'transparent',
+                                    borderRadius: '0px',
+                                    justifyContent: 'flex-start',
+                                    textTransform: 'none',
                                     '&:hover': {
-                                        backgroundColor: index === pages.length - 1 ? '#c51162' : 'transparent',
+                                        background: 'rgba(255, 255, 255, 0.1)',
                                     },
-                                    textAlign: 'center',
                                     width: '100%',
+                                    padding: '10px 20px',
+                                    fontWeight: 'bold',
                                 }}
                             >
                                 {page}
                             </Button>
                         ))}
                     </Box>
-
-                    <Box sx={{ flexGrow: 1 }} />
-
-                    <Box sx={{ flexGrow: 0 }}>
+                    <Box sx={{ display: { xs: 'flex', md: 'flex' }, ml: { xs: 'auto', md: 0 } }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="User Avatar" src="/static/images/avatar.jpg" />
+                                <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
                             </IconButton>
                         </Tooltip>
                         <Menu
+                            sx={{ mt: '45px' }}
                             id="menu-appbar"
                             anchorEl={anchorElUser}
                             anchorOrigin={{
@@ -150,18 +150,13 @@ const ResponsiveAppBar: React.FC = () => {
                         >
                             {settings.map((setting) => (
                                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography variant="body1" textAlign="center">
-                                        {setting}
-                                    </Typography>
+                                    <Typography textAlign="center">{setting}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
                     </Box>
                 </Toolbar>
             </AppBar>
-
-            <Box component="main" sx={{ flexGrow: 1, marginLeft: '70px', padding: '20px' }}>
-            </Box>
         </Box>
     );
 };

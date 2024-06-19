@@ -1,4 +1,3 @@
-// App.tsx
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Headers';
@@ -14,9 +13,6 @@ import CoursesPage from './pages/Courses/CoursesPage'; // Importa tu nueva pági
 const App: React.FC = () => {
     const [cart, setCart] = useState<Course[]>([]);
 
-    // Remove useAuth call here
-    /*     const { isAuthenticated, logout } = useAuth();
-     */
     const addToCart = (course: Course) => {
         setCart([...cart, course]);
     };
@@ -52,15 +48,13 @@ const App: React.FC = () => {
             <Router>
                 <div className="App">
                     <ResponsiveAppBar />  {/* Incluye tu Navbar aquí */}
-                    <div style={{ marginLeft: '110px', width: 'calc(100% - 110px)' }}>
-
+                    <div style={{ marginLeft: '240px', marginTop: '64px', width: 'calc(100% - 240px)' }}>
                         <Header
                             cartItems={cart}
                             addToCart={addToCart}
                             removeFromCart={removeFromCart}
                             clearCart={clearCart}
                             setCart={setCart}
-                            // Pass logout as a prop to Header
                             handleLogout={() => {
                                 const { logout } = useAuth();
                                 logout();
@@ -88,7 +82,6 @@ const App: React.FC = () => {
                             } />
                         </Routes>
                     </div>
-
                 </div>
             </Router>
         </AuthProvider>

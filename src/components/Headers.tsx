@@ -64,13 +64,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const Header: React.FC<Props> = ({ cartItems, addToCart, removeFromCart, clearCart, setCart, handleLogout }) => {
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const cartItemCount = cartItems.length;
-
-    const { isAuthenticated, logout } = useAuth(); // Asegúrate de usar useAuth dentro del componente AuthProvider
+    const { isAuthenticated, logout } = useAuth();
 
     return (
-        <Box sx={{ display: 'flex', width: '100%', boxSizing: 'border-box' }}>
-            <AppBar position="static" sx={{ width: '100%', boxSizing: 'border-box', padding: '0px'}}>
-                <Toolbar>
+        <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+            <Toolbar>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Search>
                         <SearchIconWrapper>
                             <SearchIcon />
@@ -80,52 +79,54 @@ const Header: React.FC<Props> = ({ cartItems, addToCart, removeFromCart, clearCa
                             inputProps={{ 'aria-label': 'search' }}
                         />
                     </Search>
-                    <Box sx={{ flexGrow: 1 }} />
-                    <div
-                        style={{ position: 'relative', display: 'inline-block' }}
-                        onMouseEnter={() => setIsPopupVisible(true)}
-                        onMouseLeave={() => setIsPopupVisible(false)}
+                </Box>
+                <Box sx={{ flexGrow: 1 }} />
+                <Box
+                    sx={{
+                        position: 'relative',
+                        display: 'inline-block',
+                    }}
+                    onMouseEnter={() => setIsPopupVisible(true)}
+                    onMouseLeave={() => setIsPopupVisible(false)}
+                >
+                    <IconButton
+                        aria-label="show cart items"
+                        color="inherit"
+                        component={Link}
+                        to="/shopping-cart"
                     >
-                        <IconButton
-                            aria-label="show cart items"
-                            color="inherit"
-                            sx={{ ml: 2 }}
-                            component={Link}
-                            to="/shopping-cart"
-                        >
-                            <Badge badgeContent={cartItemCount} color="secondary">
-                                <ShoppingCartIcon />
-                            </Badge>
-                        </IconButton>
-                        {isPopupVisible && (
-                            <div style={{ position: 'absolute', right: 0, zIndex: 10 }}>
-                                <Cart
-                                    cartItems={cartItems}
-                                    removeFromCart={removeFromCart}
-                                    clearCart={clearCart}
-                                    addToCart={addToCart}
-                                    setCart={setCart}
-                                />
-                            </div>
-                        )}
-                    </div>
-                    {isAuthenticated ? (
-                        <Button color="inherit" onClick={logout}>
-                            Logout
-                        </Button>
-                    ) : (
-                        <>
-                            <Button color="inherit" component={Link} to="/login">
-                                Login
-                            </Button>
-                            <Button color="inherit" component={Link} to="/register">
-                                Register
-                            </Button>
-                        </>
+                        <Badge badgeContent={cartItemCount} color="secondary">
+                            <ShoppingCartIcon />
+                        </Badge>
+                    </IconButton>
+                    {isPopupVisible && (
+                        <Box sx={{ position: 'absolute', right: 0, zIndex: 10 }}>
+                            <Cart
+                                cartItems={cartItems}
+                                removeFromCart={removeFromCart}
+                                clearCart={clearCart}
+                                addToCart={addToCart}
+                                setCart={setCart}
+                            />
+                        </Box>
                     )}
-                </Toolbar>
-            </AppBar>
-        </Box>
+                </Box>
+                {isAuthenticated ? (
+                    <Button color="inherit" onClick={logout}>
+                        Logout
+                    </Button>
+                ) : (
+                    <>
+                        <Button color="inherit" component={Link} to="/login">
+                            Login
+                        </Button>
+                        <Button color="inherit" component={Link} to="/register">
+                            Register
+                        </Button>
+                    </>
+                )}
+            </Toolbar>
+        </AppBar>
     );
 };
 
