@@ -1,7 +1,4 @@
-.container {
-    margin-left: 80px;
-  }
-  
+
   /* Sin margen en pantallas pequeñas */
   @media (max-width: 768px) {
     .container {

@@ -1,57 +1,97 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// App.tsx
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Headers';
 import Banner from './components/Banner';
-import { Container } from '@mui/material';
 import LoginPage from './pages/Auth/LoginPage';
 import RegisterPage from './pages/Auth/RegisterPage';
 import Courses, { Course } from './components/Courses';
-import Cart from './components/Cart/Cart';
+import CartPage from './pages/Cart/CartPage';
+import { AuthProvider, useAuth } from './pages/Auth/AuthContext';
+import ResponsiveAppBar from './components/NavBar';
+import CoursesPage from './pages/Courses/CoursesPage'; // Importa tu nueva página de cursos
 
 const App: React.FC = () => {
-    const [cart, setCart] = useState<Course[]>([]); // Estado para el carrito de compras
-    const [isCartOpen, setIsCartOpen] = useState(false); // Estado para controlar la apertura del drawer de carrito
+    const [cart, setCart] = useState<Course[]>([]);
 
-    // Función para agregar un curso al carrito
+    // Remove useAuth call here
+    /*     const { isAuthenticated, logout } = useAuth();
+     */
     const addToCart = (course: Course) => {
         setCart([...cart, course]);
-        setIsCartOpen(true); // Abrir el drawer al agregar un curso al carrito
     };
 
-    // Función para eliminar un curso del carrito
     const removeFromCart = (course: Course) => {
         const updatedCart = cart.filter(item => item.id !== course.id);
         setCart(updatedCart);
     };
 
-    // Función para alternar la visibilidad del drawer del carrito
-    const toggleDrawer = (open: boolean) => {
-        setIsCartOpen(open);
+    const clearCart = () => {
+        setCart([]);
+    };
+
+    useEffect(() => {
+        const storedCartItems = localStorage.getItem('cartItems');
+        if (storedCartItems) {
+            try {
+                const parsedCartItems: Course[] = JSON.parse(storedCartItems);
+                setCart(parsedCartItems);
+            } catch (error) {
+                console.error('Error parsing cart items from localStorage:', error);
+            }
+        }
+    }, []);
+
+    const PrivateRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
+        const { isAuthenticated } = useAuth();
+        return isAuthenticated ? children : <Navigate to="/login" />;
     };
 
     return (
-        <Router>
-            <div className="App">
-                <Header cartItems={cart} toggleDrawer={toggleDrawer} /> {/* Pasar toggleDrawer al Header */}
-                <Routes>
-                    <Route path="/" element={
-                        <>
-                            <Banner imageUrl="img/banner.png" title="" />
-                            <Container maxWidth="xl">
-                                <main>
-                                    <br />
-                                    <Courses addToCart={addToCart} /> {/* Pasa la función addToCart a Courses */}
-                                </main>
-                            </Container>
-                        </>
-                    } />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
-                    {/* Asegúrate de agregar rutas para otras páginas si las tienes */}
-                </Routes>
-                <Cart cartItems={cart} removeFromCart={removeFromCart} isOpen={isCartOpen} toggleDrawer={toggleDrawer} /> {/* Pasa cart y removeFromCart al componente Cart */}
-            </div>
-        </Router>
+        <AuthProvider>
+            <Router>
+                <div className="App">
+                    <ResponsiveAppBar />  {/* Incluye tu Navbar aquí */}
+                    <div style={{ marginLeft: '110px', width: 'calc(100% - 110px)' }}>
+
+                        <Header
+                            cartItems={cart}
+                            addToCart={addToCart}
+                            removeFromCart={removeFromCart}
+                            clearCart={clearCart}
+                            setCart={setCart}
+                            // Pass logout as a prop to Header
+                            handleLogout={() => {
+                                const { logout } = useAuth();
+                                logout();
+                            }}
+                        />
+                        <Routes>
+                            <Route path="/" element={
+                                <>
+                                    <Banner imageUrl="img/banner.png" title="" />
+                                    <main>
+                                        <Courses addToCart={addToCart} />
+                                    </main>
+                                </>
+                            } />
+                            <Route path="/courses" element={<CoursesPage addToCart={addToCart} />} /> {/* Asegúrate de pasar addToCart como prop */}
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route path="/register" element={<RegisterPage />} />
+                            <Route path="/shopping-cart" element={
+                                <CartPage
+                                    cartItems={cart}
+                                    removeFromCart={removeFromCart}
+                                    clearCart={clearCart}
+                                    setCart={setCart}
+                                />
+                            } />
+                        </Routes>
+                    </div>
+
+                </div>
+            </Router>
+        </AuthProvider>
     );
 };
 

@@ -47,7 +47,11 @@ const Courses: React.FC<Props> = ({ addToCart }) => {
   // Change page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+
+  
+
   return (
+      
     <div className="container">
       <div className="d-flex flex-column align-items-center gap-3">
         <div className="d-flex flex-row flex-wrap justify-content-center gap-3">

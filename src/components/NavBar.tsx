@@ -59,13 +59,10 @@ const ResponsiveAppBar: React.FC = () => {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            {/* AppBar fijado al costado derecho con altura completa */}
             <AppBar position="fixed" sx={{ width: { xs: '100%', md: '110px' }, height: { xs: 'auto', md: '100vh' }, flexDirection: { xs: 'row', md: 'column' }, alignItems: 'center', background: '#1E2123', left: 0, top: 0 }}>
                 <Toolbar sx={{ flexDirection: { xs: 'row', md: 'column' }, alignItems: 'center', width: '100%' }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                        {/* Icono del logo */}
                         <AdbIcon sx={{ mb: { xs: 0, md: 2 } }} />
-                        {/* Icono del menú (solo visible en dispositivos pequeños) */}
                         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                             <IconButton
                                 size="large"
@@ -106,7 +103,6 @@ const ResponsiveAppBar: React.FC = () => {
                         </Box>
                     </Box>
 
-                    {/* Botones de navegación (solo visibles en dispositivos grandes) */}
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, flexDirection: 'column', width: '100%' }}>
                         {pages.map((page, index) => (
                             <Button
@@ -129,10 +125,8 @@ const ResponsiveAppBar: React.FC = () => {
                         ))}
                     </Box>
 
-                    {/* Espacio flexible para empujar el menú de usuario hacia abajo */}
                     <Box sx={{ flexGrow: 1 }} />
 
-                    {/* Menú de usuario */}
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -166,9 +160,7 @@ const ResponsiveAppBar: React.FC = () => {
                 </Toolbar>
             </AppBar>
 
-            {/* Contenido principal con margen a la derecha para dejar espacio para la barra de navegación */}
-            <Box component="main" sx={{ flexGrow: 1, marginLeft:'70px', padding: '20px' }}>
-                {/* Aquí va el contenido principal de la página */}
+            <Box component="main" sx={{ flexGrow: 1, marginLeft: '70px', padding: '20px' }}>
             </Box>
         </Box>
     );

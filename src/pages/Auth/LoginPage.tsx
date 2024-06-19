@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../../utils/api';
 import { toast } from 'react-toastify';
 import Grid from '@mui/material/Grid';
@@ -13,7 +13,7 @@ import LinkMui from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useAuth } from '../Auth/AuthContext'; // Importa el contexto de autenticación
 
 const defaultTheme = createTheme();
 
@@ -22,7 +22,9 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
-  const navigate = useNavigate(); // Obtiene la función navigate
+
+  const navigate = useNavigate();
+  const { login } = useAuth(); // Utiliza el contexto de autenticación
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -30,23 +32,20 @@ const Login: React.FC = () => {
       const response = await axios.post('/login/', { email, password });
 
       if (response.status === 200) {
-        // Inicio de sesión exitoso, redirigir a la página de inicio
         toast.success('Signin successful: WELCOME!', { autoClose: 15000 });
-        navigate('/home'); // Utiliza navigate para redirigir a '/home'
+        login(); // Marca al usuario como autenticado
+        navigate('/home');
       } else {
         throw new Error('Error signing in');
       }
     } catch (error: any) {
-      // Manejo de errores de inicio de sesión
-      if (error.response.status === 400) {
-        // Manejo específico de errores 401 (no autorizado)
+      if (error.response && error.response.status === 400) {
         if (error.response.data.message === 'Incorrect password') {
           setPasswordError('Contraseña incorrecta');
         } else if (error.response.data.message === 'User not found') {
           setEmailError('Correo electrónico no encontrado');
         }
       } else {
-        // Otros errores de servidor
         toast.error('Error signing in, Please try again🤗', { autoClose: 15000 });
       }
     }
@@ -80,9 +79,9 @@ const Login: React.FC = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              marginLeft: 'auto', // Ajuste para centrar en la página
-              marginRight: 'auto', // Ajuste para centrar en la página
-              padding: '2rem', // Añadir espacio alrededor del contenido
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              padding: '2rem',
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -103,7 +102,7 @@ const Login: React.FC = () => {
                 autoFocus
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                error={emailError !== null}
+                error={Boolean(emailError)}
                 helperText={emailError}
               />
               <TextField
@@ -117,31 +116,32 @@ const Login: React.FC = () => {
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                error={passwordError !== null}
+                error={Boolean(passwordError)}
                 helperText={passwordError}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                label="Recuerdame"
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
+                color="primary"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Ingresar
               </Button>
               <Grid container>
                 <Grid item xs>
                   <LinkMui href="#" variant="body2">
-                    Olvidaste tu Contraseña?
+                    Forgot password?
                   </LinkMui>
                 </Grid>
                 <Grid item>
-                  <LinkMui component={Link} to="/register" variant="body2">
-                    {"No tienes una cuenta? Registrate"}
-                  </LinkMui>
+                  <Link to="/register" style={{ textDecoration: 'none' }}>
+                    {"Don't have an account? Sign Up"}
+                  </Link>
                 </Grid>
               </Grid>
             </form>
