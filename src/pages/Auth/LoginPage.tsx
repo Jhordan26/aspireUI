@@ -13,7 +13,7 @@ import LinkMui from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useAuth } from '../Auth/AuthContext'; // Importa el contexto de autenticación
+import { useAuth } from '../Auth/AuthContext';
 
 const defaultTheme = createTheme();
 
@@ -24,19 +24,24 @@ const Login: React.FC = () => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
   const navigate = useNavigate();
-  const { login } = useAuth(); // Utiliza el contexto de autenticación
+  const { login } = useAuth();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const response = await axios.post('/login/', { email, password });
+      const response = await axios.post('login/', { email, password });
 
       if (response.status === 200) {
-        toast.success('Signin successful: WELCOME!', { autoClose: 15000 });
-        login(); // Marca al usuario como autenticado
-        navigate('/home');
+        const { token, user } = response.data; // Extraer token y user de la respuesta
+        login(token, user); // Llamar a la función login con token y user
+        toast.success('Inicio de sesión exitoso: ¡Bienvenido!', { autoClose: 15000 });
+        navigate('');
+
+        // Almacenar token y id en localStorage
+        localStorage.setItem('token', token);
+        localStorage.setItem('id', user.id.toString());
       } else {
-        throw new Error('Error signing in');
+        throw new Error('Error al iniciar sesión');
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
@@ -46,7 +51,7 @@ const Login: React.FC = () => {
           setEmailError('Correo electrónico no encontrado');
         }
       } else {
-        toast.error('Error signing in, Please try again🤗', { autoClose: 15000 });
+        toast.error('Error al iniciar sesión, por favor intente nuevamente', { autoClose: 15000 });
       }
     }
   };
@@ -88,7 +93,7 @@ const Login: React.FC = () => {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Iniciar sesión
             </Typography>
             <form className="login-form" onSubmit={handleSubmit} style={{ width: '100%', marginTop: '1rem' }}>
               <TextField
@@ -96,7 +101,7 @@ const Login: React.FC = () => {
                 required
                 fullWidth
                 id="email"
-                label="Correo Electronico"
+                label="Correo Electrónico"
                 name="email"
                 autoComplete="email"
                 autoFocus
@@ -121,7 +126,7 @@ const Login: React.FC = () => {
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
-                label="Recuerdame"
+                label="Recuérdame"
               />
               <Button
                 type="submit"
@@ -135,12 +140,12 @@ const Login: React.FC = () => {
               <Grid container>
                 <Grid item xs>
                   <LinkMui href="#" variant="body2">
-                    Forgot password?
+                    ¿Olvidaste tu contraseña?
                   </LinkMui>
                 </Grid>
                 <Grid item>
                   <Link to="/register" style={{ textDecoration: 'none' }}>
-                    {"Don't have an account? Sign Up"}
+                    {"¿No tienes una cuenta? Regístrate"}
                   </Link>
                 </Grid>
               </Grid>

@@ -3,13 +3,15 @@ import { Card, Button, Pagination } from 'react-bootstrap';
 import axios from '../../utils/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './../style/CoursesSection.css';
+import { useAuth } from '../pages/Auth/AuthContext'; // Importa el contexto de autenticación
+import PayPalComponent from '../pages/Cart/Paypal'; // Asegúrate de importar el componente de PayPal
 
 export interface Course {
   id: number;
   nombre: string;
   descripcion: string;
   imagen: string;
-  plan_precio: string | number;
+  plan_precio: number;
 }
 
 interface Props {
@@ -17,6 +19,7 @@ interface Props {
 }
 
 const Courses: React.FC<Props> = ({ addToCart }) => {
+  const { isAuthenticated } = useAuth(); // Obtén el isAuthenticated del contexto de autenticación
   const [courses, setCourses] = useState<Course[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [coursesPerPage] = useState<number>(4);
@@ -47,11 +50,7 @@ const Courses: React.FC<Props> = ({ addToCart }) => {
   // Change page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-
-  
-
   return (
-      
     <div className="container">
       <div className="d-flex flex-column align-items-center gap-3">
         <div className="d-flex flex-row flex-wrap justify-content-center gap-3">
@@ -63,9 +62,11 @@ const Courses: React.FC<Props> = ({ addToCart }) => {
                 <Card.Text className="text-primary">
                   Total price: S/ {course.plan_precio}
                 </Card.Text>
-                <Button variant="danger" size="lg" onClick={() => handleAddToCart(course)}>
-                  Comprar
-                </Button>
+                {isAuthenticated && ( // Asegúrate de que la lógica de isAuthenticated es la correcta
+                  <Button variant="danger" size="lg" onClick={() => handleAddToCart(course)}>
+                    Comprar
+                  </Button>
+                )}
               </Card.Body>
             </Card>
           ))}

@@ -89,10 +89,7 @@ const CartPage: React.FC<Props> = ({ cartItems, removeFromCart, clearCart, setCa
                             Items: {cartItems.length}
                         </Typography>
                         {isAuthenticated && cartItems.length > 0 && (
-                            <PayPalComponent
-                                nombreCurso={cartItems[0].nombre} // Pasar nombre del curso
-                                precioPlan={cartItems[0].plan_precio} // Pasar precio del plan
-                            />
+                            <PayPalComponent ventaItems={cartItems} />
                         )}
                     </Box>
                 </Grid>

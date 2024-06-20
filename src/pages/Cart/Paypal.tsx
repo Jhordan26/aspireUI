@@ -1,17 +1,16 @@
 import React from 'react';
 import axios from 'axios';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
+import { Course } from '../../components/Courses';
+import { useAuth } from '../Auth/AuthContext';
 
 interface PayPalComponentProps {
-    nombreCurso: string;
-    precioPlan: string | number;
-    planId: number;
-    userId: number;
-    ventaId: number; // ID de la venta generado previamente
-    cursos: { id: number, nombre: string, precio: number }[];
+    ventaItems: Course[];
 }
 
-const PayPalComponent: React.FC<PayPalComponentProps> = ({ nombreCurso, precioPlan, planId, userId, ventaId, cursos }) => {
+const PayPalComponent: React.FC<PayPalComponentProps> = ({ ventaItems }) => {
+    const { user } = useAuth(); // Obtener usuario del contexto de autenticación
+
     const paypalOptions = {
         "client-id": "AStzaGanGIawQet0X34MMznoIXl8yRh_-gmr4M-e6bo9IEF0Lcl0R14UM_FYZ822EsMt_v79BOdJNknA",
         "currency": "USD"
@@ -21,15 +20,15 @@ const PayPalComponent: React.FC<PayPalComponentProps> = ({ nombreCurso, precioPl
         console.log('Venta registrada correctamente con ID:', ventaId);
     };
 
-    const savePayment = (orderID: string) => {
-        const payload = {
-            monto: precioPlan, // Ajusta esto según sea necesario
-            fecha_registro: new Date().toISOString(),
-            venta_id: ventaId,
-            cursos: cursos.map(curso => curso.id)
-        };
+    const savePayments = (orderID: string) => {
+        const payload = ventaItems.map(course => ({
+            usuario_id: user?.id,
+            curso_id: course.id,
+            monto: course.plan_precio,
+            fecha_registro: new Date().toISOString()
+        }));
 
-        axios.post('https://jellyfish-app-olbh8.ondigitalocean.app/api/save-payment/', payload)
+        axios.post('http://localhost:8000/api/save-payments/', { payments: payload })
             .then(response => {
                 console.log('Respuesta del servidor:', response.data);
                 handlePaymentSuccess(orderID);
@@ -43,24 +42,21 @@ const PayPalComponent: React.FC<PayPalComponentProps> = ({ nombreCurso, precioPl
         <PayPalScriptProvider options={paypalOptions}>
             <PayPalButtons
                 createOrder={(data, actions) => {
+                    const totalAmount = ventaItems.reduce((total, course) => total + parseFloat(course.plan_precio.toString()), 0);
                     return actions.order.create({
                         purchase_units: [{
                             amount: {
-                                value: precioPlan.toString()
+                                value: totalAmount.toString() // Usar el precio total del carrito
                             }
                         }]
                     });
                 }}
                 onApprove={(data, actions) => {
-                    if (actions && actions.order) {
-                        return actions.order.capture().then((details: any) => {
-                            const orderID = details.id;
-                            savePayment(orderID);
-                        }).catch(error => {
-                            console.error('Error al capturar el pago:', error);
-                        });
+                    if (actions && actions.order && data && data.orderID) {
+                        const orderID = data.orderID;
+                        savePayments(orderID); // Guardar los pagos con los cursos seleccionados
                     } else {
-                        console.error('Error: actions.order no está definido');
+                        console.error('Error: No se pudo obtener el orderID o actions.order');
                     }
                 }}
             />
