@@ -5,6 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import axios from '../../../utils/api'; // Importa axios o el cliente HTTP que estés usando
 import Typography from '@mui/material/Typography';
+import { margin } from '@mui/system';
 
 interface Props {
     addToCart: (course: Course) => void;

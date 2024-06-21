@@ -70,7 +70,7 @@ const Header: React.FC<Props> = ({ cartItems, addToCart, removeFromCart, clearCa
     const { isAuthenticated, logout } = useAuth();
 
     return (
-        <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#0D1A2E', width: { xs: '100%', md: 'calc(100% - 110px)' }, ml: { md: '110px' }, paddingRight:'10px' }}>
+        <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#0D1A2E', width: { xs: '100%', md: 'calc(100% - 90px)' }, ml: { md: '110px' }, paddingRight:'10px' }}>
             <Toolbar>
                 <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
                     <Search sx={{  }}>

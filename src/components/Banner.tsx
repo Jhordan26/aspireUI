@@ -12,14 +12,16 @@ const Banner: React.FC<BannerProps> = ({ imageUrl, title }) => {
         <Box
             className="banner-container"
             style={{
-                background: `url(${imageUrl}) no-repeat center center`,
-                backgroundSize: 'cover',
-                height: '500px', // Altura ajustada según tus necesidades
-                marginTop: '60px',
-                marginLeft: '109px',
-                position: 'relative',
-                marginBottom: '20px', // Espacio inferior para separar del contenido debajo
-            }}
+              background: `url(${imageUrl}) no-repeat center center`,
+              backgroundSize: '100% 100%', // Ajusta la imagen al 100% del ancho y alto del contenedor
+              height: '500px',
+              marginTop: '60px',
+              marginLeft: '89px',
+              position: 'relative',
+              marginBottom: '20px', // Espacio inferior para separar del contenido debajo
+          }}
+          
+          
         >
             <Box
                 className="banner-overlay"

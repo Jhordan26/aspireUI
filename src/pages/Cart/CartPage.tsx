@@ -56,7 +56,7 @@ const CartPage: React.FC<Props> = ({ cartItems, removeFromCart, clearCart, setCa
     };
 
     return (
-        <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+        <Container maxWidth="md" sx={{ mt: 16, mb: 4 }}>
             <Grid container spacing={4}>
                 <Grid item xs={12} md={8}>
                     {cartItems.length > 0 ? (
@@ -87,7 +87,7 @@ const CartPage: React.FC<Props> = ({ cartItems, removeFromCart, clearCart, setCa
                         ))
                     ) : (
                         <Typography variant="h6" gutterBottom>
-                            Tu carrito está vacío.ººººººººººº
+                            Tu carrito está vacío.
                         </Typography>
                     )}
                     <Button variant="contained" color="secondary" onClick={handleClearCart} fullWidth sx={{ mt: 2 }}>
@@ -95,14 +95,14 @@ const CartPage: React.FC<Props> = ({ cartItems, removeFromCart, clearCart, setCa
                     </Button>
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <Box sx={{ padding: 2, border: '1px solid #ddd', borderRadius: 2 }}>
-                        <Typography variant="h6" gutterBottom>
+                    <Box sx={{ padding: 2, border: '1px solid #ddd', borderRadius: 2, backgroundColor: '#1E2123' }}>
+                        <Typography variant="h6" gutterBottom sx={{ color: 'white' }}>
                             Resumen del pedido
                         </Typography>
-                        <Typography variant="subtitle1">
+                        <Typography variant="subtitle1" sx={{ color: 'white' }}>
                             Total: S/ {calculateTotal()}
                         </Typography>
-                        <Typography variant="subtitle1">
+                        <Typography variant="subtitle1" sx={{ color: 'white' }}>
                             Items: {cartItems.length}
                         </Typography>
                         {isAuthenticated && cartItems.length > 0 && (

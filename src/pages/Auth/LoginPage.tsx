@@ -52,7 +52,7 @@ const Login: React.FC = () => {
 				if (error.response.status === 400) {
 					if (error.response.data.message === 'Incorrect password') {
 						setPasswordError('Contraseña incorrecta');
-						setModalMessage('Las credenciales son incorrectas, intentelo nuevamente');
+						setModalMessage('Las credenciales son incorrectas, inténtelo nuevamente');
 						setModalOpen(true);
 					} else if (error.response.data.message === 'User not found') {
 						setEmailError('Correo electrónico no encontrado');
@@ -69,20 +69,27 @@ const Login: React.FC = () => {
 
 	return (
 		<ThemeProvider theme={defaultTheme}>
-			<Grid container component="main" sx={{ height: '100vh' }}>
+			<Grid container component="main" sx={{ height: '100vh', backgroundColor: '#0D1A2E' }}>
 				<Grid
 					item
 					xs={false}
 					sm={4}
 					md={7}
 					sx={{
-						color: '#243345',
-						backgroundImage: 'url(img/aspire-logo-blanco.png)',
+						backgroundImage: 'url(public/img/aspireLogo.png)',
 						backgroundRepeat: 'no-repeat',
-						backgroundColor: (t) =>
-							t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-						backgroundSize: 'cover',
+						backgroundSize: '70%', // Ajusta el tamaño de la imagen
 						backgroundPosition: 'center',
+						backgroundPositionX: '10rem', // Mueve la imagen hacia la izquierda
+						backgroundPositionY: 'center', // Centro verticalmente
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+						position: 'relative',
+						zIndex: 1,
+						paddingTop: '4rem',
+						marginBottom: '-4rem', // Ajuste para compensar el padding top
+						paddingRight: '-4rem',
 					}}
 				/>
 				<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -95,8 +102,6 @@ const Login: React.FC = () => {
 							display: 'flex',
 							flexDirection: 'column',
 							alignItems: 'center',
-							marginLeft: 'auto',
-							marginRight: 'auto',
 							padding: '2rem',
 						}}
 					>
