@@ -13,37 +13,30 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-// Páginas y configuraciones del menú de usuario
 const pages = ['Inicio', 'Cursos', 'Sobre', 'Ingresa'];
 const settings = ['Perfil', 'Logout'];
 
 const ResponsiveAppBar: React.FC = () => {
-    // Estados para manejar los menús de navegación y usuario
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const navigate = useNavigate();
 
-    // Manejar apertura del menú de navegación
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
 
-    // Manejar cierre del menú de navegación
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
 
-    // Manejar apertura del menú de usuario
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
 
-    // Manejar cierre del menú de usuario
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
 
-    // Manejar clic en las páginas del menú
     const handlePageClick = (page: string) => {
         handleCloseNavMenu();
         if (page === 'Ingresa') {
@@ -104,7 +97,7 @@ const ResponsiveAppBar: React.FC = () => {
                     </Box>
 
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, flexDirection: 'column', width: '100%' }}>
-                        {pages.map((page, index) => (
+                        {pages.map((page) => (
                             <Button
                                 key={page}
                                 onClick={() => handlePageClick(page)}

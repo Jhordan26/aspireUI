@@ -8,7 +8,9 @@ import Courses, { Course } from './components/Courses';
 import CartPage from './pages/Cart/CartPage';
 import { AuthProvider, useAuth } from './pages/Auth/AuthContext';
 import ResponsiveAppBar from './components/NavBar';
-import CoursesPage from './pages/Courses/CoursesPage'; // Importa tu nueva página de cursos
+import CoursesPage from './pages/Courses/CoursesPage'; 
+import  './App.css';
+// Importa tu nueva página de cursos
 
 const App: React.FC = () => {
     const [cart, setCart] = useState<Course[]>([]);
@@ -46,45 +48,40 @@ const App: React.FC = () => {
     return (
         <AuthProvider>
             <Router>
-                <div className="App">
-                    <ResponsiveAppBar />  {/* Incluye tu Navbar aquí */}
-                    <div style={{ marginLeft: '240px', marginTop: '64px', width: 'calc(100% - 240px)' }}>
-                        <Header
-                            cartItems={cart}
-                            addToCart={addToCart}
-                            removeFromCart={removeFromCart}
-                            clearCart={clearCart}
-                            setCart={setCart}
-                            handleLogout={() => {
-                                const { logout } = useAuth();
-                                logout();
-                            }}
-                        />
-                        <Routes>
-                            <Route path="/" element={
-                                <>
-                                    <Banner imageUrl="img/banner.png" title="" />
-                                    <main>
-                                        <Courses addToCart={addToCart} />
-                                    </main>
-                                </>
-                            } />
-                            <Route path="/courses" element={<CoursesPage addToCart={addToCart} />} /> {/* Asegúrate de pasar addToCart como prop */}
-                            <Route path="/login" element={<LoginPage />} />
-                            <Route path="/register" element={<RegisterPage />} />
-                            <Route path="/shopping-cart" element={
-                                <CartPage
-                                    cartItems={cart}
-                                    removeFromCart={removeFromCart}
-                                    clearCart={clearCart}
-                                    setCart={setCart}
-                                />
-                            } />
-                        </Routes>
-                    </div>
+                <div className="App" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <ResponsiveAppBar />
+                    <Header
+                        cartItems={cart}
+                        addToCart={addToCart}
+                        removeFromCart={removeFromCart}
+                        clearCart={clearCart}
+                        setCart={setCart}
+                        handleLogout={() => {
+                            const { logout } = useAuth();
+                            logout();
+                        }}
+                    />
+                    <Routes>
+                        <Route path="/" element={<HomePage addToCart={addToCart} />} />
+                        <Route path="/courses" element={<CoursesPage addToCart={addToCart} />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/register" element={<RegisterPage />} />
+                        <Route path="/shopping-cart" element={<CartPage cartItems={cart} removeFromCart={removeFromCart} clearCart={clearCart} setCart={setCart} />} />
+                    </Routes>
                 </div>
             </Router>
         </AuthProvider>
+    );
+};
+
+const HomePage: React.FC<{ addToCart: (course: Course) => void }> = ({ addToCart }) => {
+    return (
+        <>
+            <Banner imageUrl="/img/banner.png" title="Conoce nuestros cursos" />
+            <main style={{ flex: 1 }}>
+                <Courses addToCart={addToCart} />
+            </main>
+        </>
     );
 };
 

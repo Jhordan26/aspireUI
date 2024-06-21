@@ -26,14 +26,15 @@ interface Props {
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    backgroundColor: alpha(theme.palette.common.white, 1),
     '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
+        backgroundColor: alpha(theme.palette.common.white, 0.70),
     },
+    marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(1),
+        marginLeft: theme.spacing(3),
         width: 'auto',
     },
 }));
@@ -46,6 +47,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    color: 'black', // Cambiar el color del ícono de búsqueda
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -56,8 +58,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         transition: theme.transitions.create('width'),
         width: '100%',
         [theme.breakpoints.up('md')]: {
-            width: '20ch',
+            width: '60ch',
         },
+        color: 'black', // Cambiar el color del texto de entrada
     },
 }));
 
@@ -67,20 +70,20 @@ const Header: React.FC<Props> = ({ cartItems, addToCart, removeFromCart, clearCa
     const { isAuthenticated, logout } = useAuth();
 
     return (
-        <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#0D1A2E', width: { xs: '100%', md: 'calc(100% - 110px)' }, ml: { md: '110px' }, paddingRight:'10px' }}>
             <Toolbar>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Search>
+                <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+                    <Search sx={{  }}>
                         <SearchIconWrapper>
                             <SearchIcon />
                         </SearchIconWrapper>
                         <StyledInputBase
-                            placeholder="Search…"
+                            placeholder="Buscador de Aspire"
                             inputProps={{ 'aria-label': 'search' }}
                         />
+                        
                     </Search>
                 </Box>
-                <Box sx={{ flexGrow: 1 }} />
                 <Box
                     sx={{
                         position: 'relative',
@@ -118,7 +121,7 @@ const Header: React.FC<Props> = ({ cartItems, addToCart, removeFromCart, clearCa
                 ) : (
                     <>
                         <Button color="inherit" component={Link} to="/login">
-                            Login
+                            Iniciar Sesion
                         </Button>
                         <Button color="inherit" component={Link} to="/register">
                             Register
