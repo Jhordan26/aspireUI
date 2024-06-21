@@ -8,12 +8,14 @@ import Courses, { Course } from './components/Courses';
 import CartPage from './pages/Cart/CartPage';
 import { AuthProvider, useAuth } from './pages/Auth/AuthContext';
 import ResponsiveAppBar from './components/NavBar';
-import CoursesPage from './pages/Courses/CoursesPage'; 
-import  './App.css';
+import CoursesPage from './pages/Courses/CoursesPage';
+import './App.css';
+import MisCursosPage from './pages/Auth/MisCursosPage';
 // Importa tu nueva página de cursos
 
 const App: React.FC = () => {
     const [cart, setCart] = useState<Course[]>([]);
+    const { isAuthenticated } = useAuth();
 
     const addToCart = (course: Course) => {
         setCart([...cart, course]);
@@ -62,8 +64,12 @@ const App: React.FC = () => {
                         }}
                     />
                     <Routes>
-                        <Route path="/" element={<HomePage addToCart={addToCart} />} />
+                        <Route path="/home" element={<HomePage addToCart={addToCart} />} />
                         <Route path="/courses" element={<CoursesPage addToCart={addToCart} />} />
+                        <Route
+                            path="/mis-cursos"
+                            element={isAuthenticated ? <MisCursosPage /> : <Navigate to="/login" />}
+                        />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/shopping-cart" element={<CartPage cartItems={cart} removeFromCart={removeFromCart} clearCart={clearCart} setCart={setCart} />} />
@@ -75,12 +81,21 @@ const App: React.FC = () => {
 };
 
 const HomePage: React.FC<{ addToCart: (course: Course) => void }> = ({ addToCart }) => {
+    const { isAuthenticated, user } = useAuth(); // Obtén el estado de autenticación y los datos del usuario del contexto
+
     return (
         <>
-            <Banner imageUrl="/img/banner.png" title="Conoce nuestros cursos" />
+            {isAuthenticated && user && (
+                <div style={{ backgroundColor: '#1E2123', padding: '20px', color: '#ffffff', zIndex: 1, position: 'relative' }}>
+                    <h2>Hola {user.first_name} {user.last_name}! Un gusto verte de nuevo!</h2>
+                </div>
+            )}
+
             <main style={{ flex: 1 }}>
+                <Banner imageUrl="/img/banner.png" title="Conoce nuestros cursos" />
                 <Courses addToCart={addToCart} />
             </main>
+            <Banner imageUrl="/img/portadaMarketing.png" title="Las opciones más seguras para invertir en la BVL (Bolsa de Valores de Lima)" />
         </>
     );
 };

@@ -50,24 +50,26 @@ const Courses: React.FC<Props> = ({ addToCart }) => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <div className="container">
+    <div className="container mt-4 mb-4">
       <div className="d-flex flex-column align-items-center gap-3">
-        <div className="d-flex flex-row flex-wrap justify-content-center gap-3">
+        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 justify-content-center">
           {currentCourses.map((course) => (
-            <Card key={course.id} className="shadow-sm" style={{ width: '18rem' }}>
-              <Card.Img variant="top" src={course.imagen} alt={course.nombre} style={{ height: '140px', objectFit: 'cover' }} />
-              <Card.Body>
-                <Card.Title>{course.nombre}</Card.Title>
-                <Card.Text className="text-primary">
-                  Total price: S/ {course.plan_precio}
-                </Card.Text>
-                {isAuthenticated && ( // Asegúrate de que la lógica de isAuthenticated es la correcta
-                  <Button variant="danger" size="lg" onClick={() => handleAddToCart(course)}>
-                    Comprar
-                  </Button>
-                )}
-              </Card.Body>
-            </Card>
+            <div key={course.id} className="col">
+              <Card className="shadow-sm h-100">
+                <Card.Img variant="top" src={course.imagen} alt={course.nombre} style={{ height: '140px', objectFit: 'cover' }} />
+                <Card.Body>
+                  <Card.Title>{course.nombre}</Card.Title>
+                  <Card.Text className="text-primary">
+                    Precio total: S/ {course.plan_precio}
+                  </Card.Text>
+                  {isAuthenticated && ( // Asegúrate de que la lógica de isAuthenticated es la correcta
+                    <Button variant="danger" size="lg" onClick={() => handleAddToCart(course)}>
+                      Comprar
+                    </Button>
+                  )}
+                </Card.Body>
+              </Card>
+            </div>
           ))}
         </div>
         <Pagination className="mt-4">

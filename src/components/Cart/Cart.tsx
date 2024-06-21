@@ -30,30 +30,11 @@ interface Props {
 	addToCart: (course: Course) => void;
 	removeFromCart: (course: Course) => void;
 	clearCart: () => void;
-	setCart: React.Dispatch<React.SetStateAction<Course[]>>; // Agrega esta línea
-
 }
 
-const Cart: React.FC<Props> = ({ cartItems, addToCart, removeFromCart, clearCart, setCart }) => {
+const Cart: React.FC<Props> = ({ cartItems, addToCart, removeFromCart, clearCart }) => {
 	const [isPopupVisible, setIsPopupVisible] = useState(false);
 	const navigate = useNavigate();
-
-	// Cargar el carrito desde localStorage al montar el componente
-	useEffect(() => {
-		const storedCartItems = localStorage.getItem('cartItems');
-		if (storedCartItems) {
-			try {
-				const parsedCartItems: Course[] = JSON.parse(storedCartItems);
-				if (parsedCartItems.length > 0) {
-					// Establecer el carrito solo si hay elementos almacenados
-					// Esto se debe hacer al montar el componente
-					setCart(parsedCartItems); 
-				}
-			} catch (error) {
-				console.error('Error parsing cart items from localStorage:', error);
-			}
-		}
-	}, []);
 
 	// Almacenar el carrito en localStorage cada vez que cambia
 	useEffect(() => {

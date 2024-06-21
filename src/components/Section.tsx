@@ -4,6 +4,7 @@ import Courses from './Courses'; // Asegúrate de que la ruta sea correcta
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './../style/CoursesSection.css'; // Asegúrate de crear y tener este archivo CSS
 import { Course } from './Courses';
+import Banner from './Banner';
 
 interface Props {
   addToCart: (course: Course) => void;
@@ -12,10 +13,12 @@ interface Props {
 const CoursesSection: React.FC<Props> = ({ addToCart }) => {
   return (
     <div className="containerSeccion mx-lg-5">
+      <Banner imageUrl="/img/banner.png" title="Conoce nuestros cursos" />
       <Typography variant="h4" align="center" gutterBottom style={{ fontFamily: 'Arial, sans-serif', marginBottom: '20px' }}>
         Conoce nuestros cursos
       </Typography>
       <Courses addToCart={addToCart} />
+
     </div>
   );
 };

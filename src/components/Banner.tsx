@@ -1,7 +1,6 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { margin } from '@mui/system';
 
 interface BannerProps {
     imageUrl: string;
@@ -13,16 +12,14 @@ const Banner: React.FC<BannerProps> = ({ imageUrl, title }) => {
         <Box
             className="banner-container"
             style={{
-              background: `url(${imageUrl}) no-repeat center center`,
-              backgroundSize: '100% 100%', // Ajusta la imagen al 100% del ancho y alto del contenedor
-              height: '500px',
-              marginTop: '60px',
-              marginLeft: '109px',
-              position: 'relative',
-              marginBottom: '20px', // Espacio inferior para separar del contenido debajo
-          }}
-          
-          
+                background: `url(${imageUrl}) no-repeat center center`,
+                backgroundSize: 'cover',
+                height: '500px', // Altura ajustada según tus necesidades
+                marginTop: '60px',
+                marginLeft: '109px',
+                position: 'relative',
+                marginBottom: '20px', // Espacio inferior para separar del contenido debajo
+            }}
         >
             <Box
                 className="banner-overlay"
@@ -35,13 +32,15 @@ const Banner: React.FC<BannerProps> = ({ imageUrl, title }) => {
                     bottom: 0,
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    textAlign: 'center',
+                    justifyContent: 'flex-start', // Alineación al inicio (izquierda)
+                    textAlign: 'left',
                     color: 'white',
                     padding: '20px',
+                    overflowWrap: 'break-word', // Permite dividir palabras largas
+                    wordWrap: 'break-word', // Permite dividir palabras largas
                 }}
             >
-                <Typography variant="h4" component="h1" gutterBottom>
+                <Typography variant="h4" component="h1" gutterBottom style={{ fontWeight: 'bold', maxWidth: '80%' }}>
                     {title}
                 </Typography>
             </Box>
