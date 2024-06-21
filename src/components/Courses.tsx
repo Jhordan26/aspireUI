@@ -4,7 +4,6 @@ import axios from '../../utils/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './../style/CoursesSection.css';
 import { useAuth } from '../pages/Auth/AuthContext'; // Importa el contexto de autenticación
-import PayPalComponent from '../pages/Cart/Paypal'; // Asegúrate de importar el componente de PayPal
 
 export interface Course {
   id: number;
@@ -27,7 +26,7 @@ const Courses: React.FC<Props> = ({ addToCart }) => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get<Course[]>('cursos/');
+        const response = await axios.get<Course[]>('cursos');
         setCourses(response.data);
       } catch (error) {
         console.error('Error fetching courses:', error);

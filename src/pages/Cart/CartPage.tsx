@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Container, Grid, Button, Typography, Box, Card, CardMedia, CardContent, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
-import axios from 'axios';
 import { Course } from '../../components/Courses';
 import { useAuth } from '../Auth/AuthContext';
-import PayPalComponent from './Paypal'; // Importa tu componente PayPal aquí
+import PayPalComponent from './Paypal';
 
 interface Props {
     cartItems: Course[];
@@ -17,6 +16,7 @@ interface Props {
 const CartPage: React.FC<Props> = ({ cartItems, removeFromCart, clearCart, setCart }) => {
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
+    const [cursoIds, setCursoIds] = useState<number[]>([]);
 
     const calculateTotal = (): number => {
         return cartItems.reduce((total, course) => total + parseFloat(course.plan_precio.toString()), 0);
@@ -28,15 +28,32 @@ const CartPage: React.FC<Props> = ({ cartItems, removeFromCart, clearCart, setCa
             try {
                 const parsedCartItems: Course[] = JSON.parse(storedCartItems);
                 setCart(parsedCartItems);
+                const ids = parsedCartItems.map(course => course.id);
+                setCursoIds(ids);
             } catch (error) {
                 console.error('Error parsing cart items from localStorage:', error);
             }
         }
 
         if (!isAuthenticated) {
-            navigate('/login'); // Redirigir a la página de login si no está autenticado
+            navigate('/login');
         }
     }, [setCart, isAuthenticated, navigate]);
+
+    const handleRemoveFromCart = (course: Course) => {
+        const updatedCartItems = cartItems.filter(item => item.id !== course.id);
+        setCart(updatedCartItems);
+        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        removeFromCart(course);
+        setCursoIds(updatedCartItems.map(item => item.id)); // Actualizar los IDs en el estado
+    };
+
+    const handleClearCart = () => {
+        setCart([]);
+        localStorage.removeItem('cartItems');
+        clearCart();
+        setCursoIds([]); // Limpiar los IDs en el estado
+    };
 
     return (
         <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
@@ -61,7 +78,7 @@ const CartPage: React.FC<Props> = ({ cartItems, removeFromCart, clearCart, setCa
                                         </Typography>
                                     </CardContent>
                                     <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                                        <IconButton aria-label="delete" onClick={() => removeFromCart(course)}>
+                                        <IconButton aria-label="delete" onClick={() => handleRemoveFromCart(course)}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </Box>
@@ -70,10 +87,10 @@ const CartPage: React.FC<Props> = ({ cartItems, removeFromCart, clearCart, setCa
                         ))
                     ) : (
                         <Typography variant="h6" gutterBottom>
-                            Tu carrito está vacío.
+                            Tu carrito está vacío.ººººººººººº
                         </Typography>
                     )}
-                    <Button variant="contained" color="secondary" onClick={clearCart} fullWidth sx={{ mt: 2 }}>
+                    <Button variant="contained" color="secondary" onClick={handleClearCart} fullWidth sx={{ mt: 2 }}>
                         Vaciar carrito
                     </Button>
                 </Grid>
@@ -89,7 +106,7 @@ const CartPage: React.FC<Props> = ({ cartItems, removeFromCart, clearCart, setCa
                             Items: {cartItems.length}
                         </Typography>
                         {isAuthenticated && cartItems.length > 0 && (
-                            <PayPalComponent ventaItems={cartItems} />
+                            <PayPalComponent ventaItems={cartItems} cursoIds={cursoIds} currency="USD" />
                         )}
                     </Box>
                 </Grid>
