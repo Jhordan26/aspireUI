@@ -5,6 +5,7 @@ import CoursesComponent from '../../components/Courses';
 import { Container, Row, Col } from 'react-bootstrap';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import axios from '../../../utils/api'; // Importa axios o el cliente HTTP que estés usando
+import { margin } from '@mui/system';
 
 interface Props {
     addToCart: (course: Course) => void;
@@ -31,7 +32,7 @@ const CoursesPage: React.FC<Props> = ({ addToCart }) => {
 
     return (
         <Container className="mt-4">
-            <h1 className="text-center mb-4">Todos los cursos disponibles</h1>
+            <h1 className="text-center mb-4" style={{marginTop:'60px', color:'white'}}>Todos los cursos disponibles</h1>
             {loading ? (
                 <LoadingSpinner />
             ) : (

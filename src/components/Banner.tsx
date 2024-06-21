@@ -17,7 +17,7 @@ const Banner: React.FC<BannerProps> = ({ imageUrl, title }) => {
               backgroundSize: '100% 100%', // Ajusta la imagen al 100% del ancho y alto del contenedor
               height: '500px',
               marginTop: '60px',
-              marginLeft: '109px',
+              marginLeft: '89px',
               position: 'relative',
               marginBottom: '20px', // Espacio inferior para separar del contenido debajo
           }}
